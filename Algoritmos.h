@@ -9,10 +9,23 @@ typedef enum{
 	QUICKSORT_MEIDANA,
 	MERGESORT,
 	RADIXSORT,
-	BUCKETSORT
+	BUCKETSORT,
+	BOLHA,
+	BOLHA_COM_PARADA,
+	INSERCAO_DIRETA,
+	INSERCAO_BINARIA,
+	INSERCAO_TERNARIA,
+	SHELL_SORT
 }Algoritmo;
 
 int* ordenarNumeros(Algoritmo algoritmo);
 void selectionSort(int* vetor, int qtdNums, int* registro);
+
+void bolha(int* vetor, int qtdNums, int* registro);
+void bolhaComParada(int* vetor, int qtdNums, int* registro);
+void insercaoDireta(int* vetor, int qtdNums, int* registro);
+void insercaoBinaria(int* vetor, int qtdNums, int* registro);
+void insercaoTernaria(int* vetor, int qtdNums, int* registro);
+void shellSort(int* vetor, int qtdNums, int* registro);
 
 #endif

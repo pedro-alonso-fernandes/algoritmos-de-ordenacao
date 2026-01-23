@@ -20,6 +20,8 @@ typedef enum{
 
 int* ordenarNumeros(Algoritmo algoritmo);
 void selectionSort(int* vetor, int qtdNums, int* registro);
+void heapify(int* vetor, int tamanho, int raiz, int* registro);
+void heapSort(int* vetor, int tamanho, int* registro);
 
 void bolha(int* vetor, int qtdNums, int* registro);
 void bolhaComParada(int* vetor, int qtdNums, int* registro);

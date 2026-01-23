@@ -15,7 +15,7 @@ typedef enum{
 	INSERCAO_DIRETA,
 	INSERCAO_BINARIA,
 	INSERCAO_TERNARIA,
-    SHELL_SORT
+   SHELL_SORT
 }Algoritmo;
 
 void selectionSort(int* vetor, int tamanho, int* registro);
@@ -91,9 +91,9 @@ int* ordenarNumeros(Algoritmo algoritmo){
 				case INSERCAO_TERNARIA:
 					insercaoTernaria(vetor, qtdLinhas, registro);
 					break;
-                case SHELL_SORT:
-                    shellSort(vetor, qtdLinhas, registro);
-                    break;
+            case SHELL_SORT:
+               shellSort(vetor, qtdLinhas, registro);
+               break;
 			}
 
 			// Cria o arquivo que conterá os elementos ordenados
@@ -122,6 +122,10 @@ int* ordenarNumeros(Algoritmo algoritmo){
 }
 
 void selectionSort(int* vetor, int tamanho, int* registro){
+	
+    registro[0] = 0; // Comparações
+    registro[1] = 0; // Trocas 
+
 	for(int i = 0; i < (tamanho - 1); i++){
 		int indice_menor = i;
 		
@@ -142,216 +146,6 @@ void selectionSort(int* vetor, int tamanho, int* registro){
 		
 	}
 
-}
-
-
-void bolha(int* vetor, int qtdNums, int* registro){
-
-    int aux;
-
-    registro[0] = 0; // Comparações
-    registro[1] = 0; // Trocas
-
-    for(int i = qtdNums - 1; i >= 1; i--){
-        for(int j = 0; j < i; j++){
-
-            registro[0]++; // Contabiliza compração
-
-            if (vetor[j] > vetor[j + 1]) {
-                aux = vetor[j];
-                vetor[j] = vetor[j + 1];
-                vetor[j + 1] = aux;
-                registro[1]++; // Contabiliza troca
-            }
-        }
-    }
-}
-
-void bolhaComParada(int* vetor, int qtdNums, int* registro){
-
-    int aux;
-    int trocou;
-
-    registro[0] = 0; // Comparações
-    registro[1] = 0; // Trocas
-
-    for(int i = qtdNums - 1; i >= 1; i--){
-        trocou = 0;
-
-        for(int j = 0; j < i; j++){
-
-            registro[0]++; // Contabiliza comparação
-
-            if(vetor[j] > vetor[j + 1]){
-                aux = vetor[j];
-                vetor[j] = vetor[j + 1];
-                vetor[j + 1] = aux;
-                registro[1]++; // Contabiliza troca
-                trocou = 1;    // Marcou que houve troca
-            }
-        }
-
-        // Critério de parada
-        if(trocou == 0){
-            break;
-        }
-    }
-}
-
-void insercaoDireta(int* vetor, int qtdNums, int* registro){
-
-    int aux;
-    int j;
-
-    registro[0] = 0; // Comparações
-    registro[1] = 0; // Trocas
-
-    for(int i = 1; i < qtdNums; i++){
-
-        aux = vetor[i];
-        j = i - 1;
-
-        while(j >= 0){
-            registro[0]++; // Contabiliza ccomparação
-
-            if(aux < vetor[j]){
-                vetor[j + 1] = vetor[j];
-                registro[1]++; // Contabiliza troca
-                j--;
-            } else {
-                break;
-            }
-        }
-
-        if(j != i - 1){
-            vetor[j + 1] = aux;
-            registro[1]++; // Contabiliza troca (insere o "aux" no seu devido lugar) - inserção final
-        }
-    }
-}
-
-void insercaoBinaria(int* vetor, int qtdNums, int* registro){
-
-    int aux;
-    int esq, dir, meio;
-
-    registro[0] = 0; // Comparações
-    registro[1] = 0; // Trocas 
-
-    for(int i = 1; i < qtdNums; i++){
-
-        aux = vetor[i];
-        esq = 0;
-        dir = i;
-
-        // Busca binária da posição correta
-        while(esq < dir){
-            meio = (esq + dir) / 2;
-            registro[0]++; // Contabiliza comparação
-
-            if(vetor[meio] <= aux){
-                esq = meio + 1;
-            } else {
-                dir = meio;
-            }
-        }
-
-        // Deslocando elementos
-        for(int j = i; j > esq; j--){
-            vetor[j] = vetor[j - 1];
-            registro[1]++; // Contabiliza troca
-        }
-
-        vetor[esq] = aux;
-        registro[1]++; // Contabiliza troca - inserção final
-    }
-}
-
-void insercaoTernaria(int* vetor, int qtdNums, int* registro){
-
-    int aux;
-    int esq, dir;
-    int div1, div2;
-
-    registro[0] = 0; // Comparações
-    registro[1] = 0; // Trocas
-
-    for(int i = 1; i < qtdNums; i++){
-
-        aux = vetor[i];
-        esq = 0;
-        dir = i;
-
-        // Busca ternária da posição correta
-        while(esq < dir){
-
-            div1 = esq + (dir - esq) / 3;
-            div2 = esq + 2 * (dir - esq) / 3;
-
-            registro[0]++; // Contabiliza comparação
-            if(aux < vetor[div1]){
-                dir = div1;
-            }
-            else{
-                registro[0]++; // Contabiliza comparação
-                if(aux > vetor[div2]){
-                    esq = div2 + 1;
-                }
-                else{
-                    esq = div1 + 1;
-                    dir = div2;
-                }
-            }
-        }
-
-        // Deslocando elementos
-        for(int j = i; j > esq; j--){
-            vetor[j] = vetor[j - 1];
-            registro[1]++; // Contabiliza troca
-        }
-
-        vetor[esq] = aux;
-        registro[1]++; // Contabiliza troca - inserção final
-    }
-}
-
-void shellSort(int* vetor, int qtdNums, int* registro){
-
-    int h = 1; // Intervalo
-    int aux;
-    int j;
-
-    registro[0] = 0; // Comparações
-    registro[1] = 0; // Trocas
-
-    // Geração do intervalo
-    while(h < qtdNums){
-        h = 3 * h + 1;
-    }
-
-    while(h > 1){
-        h = h / 3;
-
-        for(int i = h; i < qtdNums; i++){
-            aux = vetor[i];
-            j = i - h;
-
-            while(j >= 0){
-                registro[0]++; // Contabiliza comparação
-
-                if(aux < vetor[j]){
-                    vetor[j + h] = vetor[j];
-                    registro[1]++; // Contabiliza troca
-                    j = j - h;
-                } else {
-                    break;
-                }
-            }
-
-            vetor[j + h] = aux;
-            registro[1]++; // Contabiliza troca - inserção final
-        }
-    }
 }
 
 void heapify(int* vetor, int tamanho, int raiz, int* registro){
@@ -402,5 +196,234 @@ void heapSort(int* vetor, int tamanho, int* registro){
 		// Deixa a nova árvore em max heap
 		heapify(vetor, i, 0, registro);
 	}
+}
+
+void bolha(int* vetor, int qtdNums, int* registro){
+
+    int aux;
+	 
+    registro[0] = 0; // Comparações
+    registro[1] = 0; // Trocas 
+
+    for(int i = qtdNums - 1; i >= 1; i--){
+        for(int j = 0; j < i; j++){
+			  
+			  if (vetor[j] > vetor[j + 1]) {
+				  aux = vetor[j];
+				  vetor[j] = vetor[j + 1];
+				  vetor[j + 1] = aux;
+				  registro[1]++; // Contabiliza troca
+            }
+
+				registro[0]++; // Contabiliza compração
+        }
+    }
+}
+
+void bolhaComParada(int* vetor, int qtdNums, int* registro){
+
+    int aux;
+    int trocou;
+
+    registro[0] = 0; // Comparações
+    registro[1] = 0; // Trocas 
+
+    for(int i = qtdNums - 1; i >= 1; i--){
+        trocou = 0;
+
+        for(int j = 0; j < i; j++){
+
+			  if(vetor[j] > vetor[j + 1]){
+				  aux = vetor[j];
+				  vetor[j] = vetor[j + 1];
+				  vetor[j + 1] = aux;
+				  registro[1]++; // Contabiliza troca
+				  trocou = 1;    // Marcou que houve troca
+            }
+				
+				registro[0]++; // Contabiliza comparação
+        }
+
+        // Critério de parada
+        if(trocou == 0){
+            break;
+        }
+    }
+}
+
+void insercaoDireta(int* vetor, int qtdNums, int* registro){
+
+    int aux;
+    int j;
+
+    registro[0] = 0; // Comparações
+    registro[1] = 0; // Trocas 
+
+    for(int i = 1; i < qtdNums; i++){
+
+        aux = vetor[i];
+        j = i - 1;
+
+        while(j >= 0){
+			  
+			  if(aux < vetor[j]){
+				  vetor[j + 1] = vetor[j];
+				  registro[1]++; // Contabiliza troca
+				  j--;
+            } else {
+					registro[0]++; // Contabiliza comparação, pois vai sair do while e não vai chegar no "registro[0]++" abaixo
+					break;
+            }
+				
+				registro[0]++; // Contabiliza comparação
+        }
+
+        if(j != i - 1){
+            vetor[j + 1] = aux;
+
+				/*
+				Não precisa do código abaixo, essa troca já foi contabilizada dentro do while 
+            registro[1]++; // Contabiliza troca (insere o "aux" no seu devido lugar) - inserção final
+				*/
+        }
+    }
+}
+
+void insercaoBinaria(int* vetor, int qtdNums, int* registro){
+
+    int aux;
+    int esq, dir, meio;
+
+    registro[0] = 0; // Comparações
+    registro[1] = 0; // Trocas 
+
+    for(int i = 1; i < qtdNums; i++){
+
+        aux = vetor[i];
+        esq = 0;
+        dir = i;
+
+        // Busca binária da posição correta
+        while(esq < dir){
+            meio = (esq + dir) / 2;
+				
+            if(vetor[meio] <= aux){
+					esq = meio + 1;
+            } else {
+					dir = meio;
+            }
+				
+				registro[0]++; // Contabiliza comparação
+        }
+
+        // Deslocando elementos
+        for(int j = i; j > esq; j--){
+            vetor[j] = vetor[j - 1];
+            registro[1]++; // Contabiliza troca
+        }
+
+        vetor[esq] = aux;
+		  /*
+		  Essa troca já foi contabilizada no for acima
+        registro[1]++; // Contabiliza troca - inserção final
+		  */
+    }
+}
+
+void insercaoTernaria(int* vetor, int qtdNums, int* registro){
+
+    int aux;
+    int esq, dir;
+    int div1, div2;
+
+    registro[0] = 0; // Comparações
+    registro[1] = 0; // Trocas
+
+    for(int i = 1; i < qtdNums; i++){
+
+        aux = vetor[i];
+        esq = 0;
+        dir = i;
+
+        // Busca ternária da posição correta
+        while(esq < dir){
+
+            div1 = esq + (dir - esq) / 3;
+            div2 = esq + 2 * (dir - esq) / 3;
+
+            if(aux < vetor[div1]){
+					dir = div1;
+            }
+            else{
+					if(aux > vetor[div2]){
+						esq = div2 + 1;
+					}
+					else{
+						esq = div1 + 1;
+						dir = div2;
+					}
+					
+					registro[0]++; // Contabiliza comparação
+            }
+				
+				registro[0]++; // Contabiliza comparação
+        }
+
+        // Deslocando elementos
+        for(int j = i; j > esq; j--){
+            vetor[j] = vetor[j - 1];
+            registro[1]++; // Contabiliza troca
+        }
+
+        vetor[esq] = aux;
+		  /*
+		  Essa troca já foi contabilizada no for acima
+        registro[1]++; // Contabiliza troca - inserção final
+		  */
+    }
+}
+
+void shellSort(int* vetor, int qtdNums, int* registro){
+
+    int h = 1; // Intervalo
+    int aux;
+    int j;
+
+    registro[0] = 0; // Comparações
+    registro[1] = 0; // Trocas
+
+    // Geração do intervalo
+    while(h < qtdNums){
+        h = 3 * h + 1;
+    }
+
+    while(h > 1){
+        h = h / 3;
+
+        for(int i = h; i < qtdNums; i++){
+            aux = vetor[i];
+            j = i - h;
+
+            while(j >= 0){
+					
+					if(aux < vetor[j]){
+						vetor[j + h] = vetor[j];
+						registro[1]++; // Contabiliza troca
+						j = j - h;
+					} else {
+						registro[0]++; // Contabiliza comparação, pois vai sair do while e não vai chegar no "registro[0]++" abaixo
+						break;
+					}
+					
+					registro[0]++; // Contabiliza comparação
+            }
+
+            vetor[j + h] = aux;
+				/*
+				Essa troca já foi contabilizada dentro do if do while acima
+            registro[1]++; // Contabiliza troca - inserção final
+				*/
+        }
+    }
 }
 

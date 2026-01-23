@@ -9,7 +9,7 @@ int main(int argc, char** argv){
 	printf("--------------------------------------------------------\n");
 	
 	gerarNumeros(5, ALEATORIO);
-	int* registro = ordenarNumeros(SELECTION_SORT);
+	int* registro = ordenarNumeros(HEAPSORT);
 
 	printf("Qtd Comparações: %d\n", registro[0]);
 	printf("Qtd trocas: %d\n", registro[1]);

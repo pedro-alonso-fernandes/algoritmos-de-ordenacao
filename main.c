@@ -8,8 +8,8 @@ int main(int argc, char** argv){
 	printf("\n");
 	printf("--------------------------------------------------------\n");
 	
-	gerarNumeros(5, ALEATORIO);
-	int* registro = ordenarNumeros(SELECTION_SORT);
+	gerarNumeros(100000, ALEATORIO);
+	int* registro = ordenarNumeros(BOLHA);
 
 	printf("Qtd Comparações: %d\n", registro[0]);
 	printf("Qtd trocas: %d\n", registro[1]);

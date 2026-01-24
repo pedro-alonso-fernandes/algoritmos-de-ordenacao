@@ -18,16 +18,16 @@ typedef enum{
 	SHELL_SORT
 }Algoritmo;
 
-int* ordenarNumeros(Algoritmo algoritmo);
-void selectionSort(int* vetor, int qtdNums, int* registro);
-void heapify(int* vetor, int tamanho, int raiz, int* registro);
-void heapSort(int* vetor, int tamanho, int* registro);
+long long* ordenarNumeros(Algoritmo algoritmo);
+void selectionSort(int* vetor, int qtdNums, long long* registro);
+void heapify(int* vetor, int tamanho, int raiz, long long* registro);
+void heapSort(int* vetor, int tamanho, long long* registro);
 
-void bolha(int* vetor, int qtdNums, int* registro);
-void bolhaComParada(int* vetor, int qtdNums, int* registro);
-void insercaoDireta(int* vetor, int qtdNums, int* registro);
-void insercaoBinaria(int* vetor, int qtdNums, int* registro);
-void insercaoTernaria(int* vetor, int qtdNums, int* registro);
-void shellSort(int* vetor, int qtdNums, int* registro);
+void bolha(int* vetor, int qtdNums, long long* registro);
+void bolhaComParada(int* vetor, int qtdNums, long long* registro);
+void insercaoDireta(int* vetor, int qtdNums, long long* registro);
+void insercaoBinaria(int* vetor, int qtdNums, long long* registro);
+void insercaoTernaria(int* vetor, int qtdNums, long long* registro);
+void shellSort(int* vetor, int qtdNums, long long* registro);
 
 #endif

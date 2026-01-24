@@ -13,20 +13,21 @@ int main(int argc, char** argv){
 	printf("--------------------------------------------------------\n");
 	
 
-	gerarNumeros(500000, ALEATORIO);
+	gerarNumeros(100000, ALEATORIO);
 
 	inicio = clock();
-	int* registro = ordenarNumeros(HEAPSORT);
+	long long* registro = ordenarNumeros(HEAPSORT);
 	fim = clock();
 
 	tempo = (double)(fim - inicio) / CLOCKS_PER_SEC;
 
-	printf("Qtd Comparações: %d\n", registro[0]);
-	printf("Qtd trocas: %d\n", registro[1]);
+	printf("Qtd Comparações: %lld\n", registro[0]);
+	printf("Qtd trocas: %lld\n", registro[1]);
 	printf("Tempo de execução: %.6f segundos\n", tempo);
 
 	printf("--------------------------------------------------------\n");
 	printf("\n");
 
+	free(registro);
 	return 0;
 }

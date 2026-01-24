@@ -18,20 +18,20 @@ typedef enum{
    SHELL_SORT
 }Algoritmo;
 
-void selectionSort(int* vetor, int tamanho, int* registro);
-void heapSort(int* vetor, int tamanho, int* registro);
+void selectionSort(int* vetor, int tamanho, long long* registro);
+void heapSort(int* vetor, int tamanho, long long* registro);
 
-void bolha(int* vetor, int qtdNums, int* registro);
-void bolhaComParada(int* vetor, int qtdNums, int* registro);
-void insercaoDireta(int* vetor, int qtdNums, int* registro);
-void insercaoBinaria(int* vetor, int qtdNums, int* registro);
-void insercaoTernaria(int* vetor, int qtdNums, int* registro);
-void shellSort(int* vetor, int qtdNums, int* registro);
+void bolha(int* vetor, int qtdNums, long long* registro);
+void bolhaComParada(int* vetor, int qtdNums, long long* registro);
+void insercaoDireta(int* vetor, int qtdNums, long long* registro);
+void insercaoBinaria(int* vetor, int qtdNums, long long* registro);
+void insercaoTernaria(int* vetor, int qtdNums, long long* registro);
+void shellSort(int* vetor, int qtdNums, long long* registro);
 
 // Abre o arquivo "entrada.txt", carrega os valores para um vetor, e manda para algum algoritmo de ordenação
-int* ordenarNumeros(Algoritmo algoritmo){
+long long* ordenarNumeros(Algoritmo algoritmo){
 	// Utilizarei o vetor registro para registrar a quantidade de comparações e trocas dentro dos algoritmos
-	int* registro = (int*) malloc(2 * sizeof(int));
+	long long* registro = (long long*) malloc(2 * sizeof(long long));
 	registro[0] = 0;	// A posição 0 do vetor salva as comparações
 	registro[1] = 0;	// A posição 1 do vetor salva as trocas
 	
@@ -121,7 +121,7 @@ int* ordenarNumeros(Algoritmo algoritmo){
 	return registro;
 }
 
-void selectionSort(int* vetor, int tamanho, int* registro){
+void selectionSort(int* vetor, int tamanho, long long* registro){
 	
     registro[0] = 0; // Comparações
     registro[1] = 0; // Trocas 
@@ -148,7 +148,7 @@ void selectionSort(int* vetor, int tamanho, int* registro){
 
 }
 
-void heapify(int* vetor, int tamanho, int raiz, int* registro){
+void heapify(int* vetor, int tamanho, int raiz, long long* registro){
 	int maior = raiz;		// Supõe que a raiz é o maior número
 	int esquerda = (2 * raiz) + 1;	// Conta para lidar um array como uma árvore binária. Isso pega o filho à esquerda
 	int direita = (2 * raiz) + 2;		// Conta para lidar um array como uma árvore binária. Isso pega o filho à direita
@@ -180,7 +180,7 @@ void heapify(int* vetor, int tamanho, int raiz, int* registro){
 	registro[0]++;		// Contabiliza comparação
 }
 
-void heapSort(int* vetor, int tamanho, int* registro){
+void heapSort(int* vetor, int tamanho, long long* registro){
 	// Deixa toda a árvore em max heap, chamando o heapify em todo ramo que possui filho
 	for(int i = (tamanho / 2) - 1; i >= 0; i--)
 		heapify(vetor, tamanho, i, registro);
@@ -198,7 +198,7 @@ void heapSort(int* vetor, int tamanho, int* registro){
 	}
 }
 
-void bolha(int* vetor, int qtdNums, int* registro){
+void bolha(int* vetor, int qtdNums, long long* registro){
 
     int aux;
 	 
@@ -220,7 +220,7 @@ void bolha(int* vetor, int qtdNums, int* registro){
     }
 }
 
-void bolhaComParada(int* vetor, int qtdNums, int* registro){
+void bolhaComParada(int* vetor, int qtdNums, long long* registro){
 
     int aux;
     int trocou;
@@ -251,7 +251,7 @@ void bolhaComParada(int* vetor, int qtdNums, int* registro){
     }
 }
 
-void insercaoDireta(int* vetor, int qtdNums, int* registro){
+void insercaoDireta(int* vetor, int qtdNums, long long* registro){
 
     int aux;
     int j;
@@ -289,7 +289,7 @@ void insercaoDireta(int* vetor, int qtdNums, int* registro){
     }
 }
 
-void insercaoBinaria(int* vetor, int qtdNums, int* registro){
+void insercaoBinaria(int* vetor, int qtdNums, long long* registro){
 
     int aux;
     int esq, dir, meio;
@@ -330,7 +330,7 @@ void insercaoBinaria(int* vetor, int qtdNums, int* registro){
     }
 }
 
-void insercaoTernaria(int* vetor, int qtdNums, int* registro){
+void insercaoTernaria(int* vetor, int qtdNums, long long* registro){
 
     int aux;
     int esq, dir;
@@ -383,7 +383,7 @@ void insercaoTernaria(int* vetor, int qtdNums, int* registro){
     }
 }
 
-void shellSort(int* vetor, int qtdNums, int* registro){
+void shellSort(int* vetor, int qtdNums, long long* registro){
 
     int h = 1; // Intervalo
     int aux;

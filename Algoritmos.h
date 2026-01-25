@@ -15,7 +15,7 @@ typedef enum{
 	INSERCAO_DIRETA,
 	INSERCAO_BINARIA,
 	INSERCAO_TERNARIA,
-	SHELL_SORT
+	SHELLSORT
 }Algoritmo;
 
 long long* ordenarNumeros(Algoritmo algoritmo);

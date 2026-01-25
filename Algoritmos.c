@@ -15,7 +15,7 @@ typedef enum{
 	INSERCAO_DIRETA,
 	INSERCAO_BINARIA,
 	INSERCAO_TERNARIA,
-   SHELL_SORT
+   	SHELLSORT
 }Algoritmo;
 
 void selectionSort(int* vetor, int tamanho, long long* registro);
@@ -91,9 +91,9 @@ long long* ordenarNumeros(Algoritmo algoritmo){
 				case INSERCAO_TERNARIA:
 					insercaoTernaria(vetor, qtdLinhas, registro);
 					break;
-            case SHELL_SORT:
-               shellSort(vetor, qtdLinhas, registro);
-               break;
+            	case SHELLSORT:
+               		shellSort(vetor, qtdLinhas, registro);
+               		break;
 			}
 
 			// Cria o arquivo que conterá os elementos ordenados

@@ -6,6 +6,8 @@
 
 int main(int argc, char** argv){
 
+	srand(time(NULL));
+
 	clock_t inicio, fim;
 	double tempo;
 
@@ -13,10 +15,10 @@ int main(int argc, char** argv){
 	printf("--------------------------------------------------------\n");
 	
 
-	gerarNumeros(100000, ALEATORIO);
+	gerarNumeros(10000, CRESCENTE);
 
 	inicio = clock();
-	long long* registro = ordenarNumeros(HEAPSORT);
+	long long* registro = ordenarNumeros(SHELL_SORT);
 	fim = clock();
 
 	tempo = (double)(fim - inicio) / CLOCKS_PER_SEC;

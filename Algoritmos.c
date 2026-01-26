@@ -279,12 +279,7 @@ void insercaoDireta(int* vetor, int qtdNums, long long* registro){
         }
 
         if(j != i - 1){
-            vetor[j + 1] = aux;
-
-				/*
-				Não precisa do código abaixo, essa troca já foi contabilizada dentro do while 
-            registro[1]++; // Contabiliza troca (insere o "aux" no seu devido lugar) - inserção final
-				*/
+            vetor[j + 1] = aux; // Essa troca já foi contabilizada dentro do if do while acima
         }
     }
 }
@@ -322,11 +317,8 @@ void insercaoBinaria(int* vetor, int qtdNums, long long* registro){
             registro[1]++; // Contabiliza troca
         }
 
-        vetor[esq] = aux;
-		  /*
-		  Essa troca já foi contabilizada no for acima
-        registro[1]++; // Contabiliza troca - inserção final
-		  */
+        vetor[esq] = aux; // Essa troca já foi contabilizada no for acima
+		  
     }
 }
 
@@ -375,17 +367,13 @@ void insercaoTernaria(int* vetor, int qtdNums, long long* registro){
             registro[1]++; // Contabiliza troca
         }
 
-        vetor[esq] = aux;
-		  /*
-		  Essa troca já foi contabilizada no for acima
-        registro[1]++; // Contabiliza troca - inserção final
-		  */
+        vetor[esq] = aux; // Essa troca já foi contabilizada no for acima
     }
 }
 
 void shellSort(int* vetor, int qtdNums, long long* registro){
 
-    int h = 1; // Intervalo
+    int gap = 1; // Intervalo 
     int aux;
     int j;
 
@@ -393,23 +381,23 @@ void shellSort(int* vetor, int qtdNums, long long* registro){
     registro[1] = 0; // Trocas
 
     // Geração do intervalo
-    while(h < qtdNums){
-        h = 3 * h + 1;
+    while(gap < qtdNums){
+        gap = 3 * gap + 1;
     }
 
-    while(h > 1){
-        h = h / 3;
+    while(gap > 1){
+        gap = gap / 3;
 
-        for(int i = h; i < qtdNums; i++){
+        for(int i = gap; i < qtdNums; i++){
             aux = vetor[i];
-            j = i - h;
+            j = i - gap;
 
             while(j >= 0){
 					
 					if(aux < vetor[j]){
-						vetor[j + h] = vetor[j];
+						vetor[j + gap] = vetor[j];
 						registro[1]++; // Contabiliza troca
-						j = j - h;
+						j = j - gap;
 					} else {
 						registro[0]++; // Contabiliza comparação, pois vai sair do while e não vai chegar no "registro[0]++" abaixo
 						break;
@@ -418,11 +406,8 @@ void shellSort(int* vetor, int qtdNums, long long* registro){
 					registro[0]++; // Contabiliza comparação
             }
 
-            vetor[j + h] = aux;
-				/*
-				Essa troca já foi contabilizada dentro do if do while acima
-            registro[1]++; // Contabiliza troca - inserção final
-				*/
+            vetor[j + gap] = aux; // Essa troca já foi contabilizada dentro do if do while acima
+			
         }
     }
 }

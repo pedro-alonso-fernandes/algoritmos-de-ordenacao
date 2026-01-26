@@ -15,10 +15,10 @@ int main(int argc, char** argv){
 	printf("--------------------------------------------------------\n");
 	
 
-	gerarNumeros(10000, CRESCENTE);
+	gerarNumeros(500000, ALEATORIO);
 
 	inicio = clock();
-	long long* registro = ordenarNumeros(HEAPSORT);
+	long long* registro = ordenarNumeros(BOLHA_COM_PARADA);
 	fim = clock();
 
 	tempo = (double)(fim - inicio) / CLOCKS_PER_SEC;

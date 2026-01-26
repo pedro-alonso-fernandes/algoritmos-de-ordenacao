@@ -10,7 +10,7 @@ int main(int argc, char** argv){
 	
 
 	gerarNumeros(5, ALEATORIO);
-	int* registro = ordenarNumeros(HEAPSORT);
+	int* registro = ordenarNumeros(QUICKSORT_CENTRO_HOARE);
 
 
 	printf("Qtd Comparações: %d\n", registro[0]);

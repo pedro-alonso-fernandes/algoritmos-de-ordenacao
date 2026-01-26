@@ -15,8 +15,7 @@ int main(int argc, char** argv){
 	printf("--------------------------------------------------------\n");
 	
 
-	gerarNumeros(500000, ALEATORIO);
-
+	gerarNumeros(5, ALEATORIO);
 	inicio = clock();
 	long long* registro = ordenarNumeros(BOLHA_COM_PARADA);
 	fim = clock();

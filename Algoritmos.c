@@ -24,6 +24,7 @@ void heapSort(int* vetor, int tamanho, long long* registro);
 void quickSortFim(int* vetor, int inicio, int fim, long long* registro);
 void quickSortCentroLomuto(int* vetor, int inicio, int fim, long long* registro);
 void quickSortCentroHoare(int* vetor, int inicio, int fim, long long* registro);
+void quickSortMediana(int* vetor, int inicio, int fim, long long* registro);
 
 void bolha(int* vetor, int tamanho, long long* registro);
 void bolhaComParada(int* vetor, int tamanho, long long* registro);
@@ -72,7 +73,7 @@ long long* ordenarNumeros(Algoritmo algoritmo){
 					quickSortFim(vetor, 0, qtdLinhas - 1, registro);
 					break;
 				case QUICKSORT_MEDIANA:
-					// Chama a função
+					quickSortMediana(vetor, 0, qtdLinhas - 1, registro);
 					break;
 				case MERGESORT:
 					// Chama a função
@@ -245,34 +246,35 @@ void quickSortCentroLomuto(int* vetor, int inicio, int fim, long long* registro)
 
 int particaoCentroHoare(int* vetor, int inicio, int fim, long long* registro){
 	// Escolhe o pivô no centro
-    int pivo = vetor[inicio + (fim - inicio) / 2];
-    int i = inicio - 1;
-    int j = fim + 1;
+	int centro = inicio + (fim - inicio) / 2;
+	int pivo = vetor[centro];
+	int i = inicio - 1;
+	int j = fim + 1;
 
-    while (1) {
-        // Move o ponteiro i para a direita enquanto o valor for menor que o pivô
-        do {
-            i++;
-            registro[0]++; // Contabiliza comparação
-        } while (vetor[i] < pivo);
+	while (1) {
+		// Move o ponteiro i para a direita enquanto o valor for menor que o pivô
+		do {
+			i++;
+			registro[0]++; // Contabiliza comparação
+		} while (vetor[i] < pivo);
 
-        // Move o ponteiro j para a esquerda enquanto o valor for maior que o pivô
-        do {
-            j--;
-            registro[0]++; // Contabiliza comparação
-        } while (vetor[j] > pivo);
+		// Move o ponteiro j para a esquerda enquanto o valor for maior que o pivô
+		do {
+			j--;
+			registro[0]++; // Contabiliza comparação
+		} while (vetor[j] > pivo);
 
-        // Se os ponteiros se cruzarem, a partição acabou
-        if (i >= j) {
-            return j;
-        }
+		// Se os ponteiros se cruzarem, a partição acabou
+		if (i >= j) {
+			return j;
+		}
 
-        // Se encontrou um valor maior à esquerda e um menor à direita, troca-os
-        int aux = vetor[j];
-		  vetor[j] = vetor[i];
-		  vetor[i] = aux;
-		  registro[1]++;		// Contabiliza troca
-    }
+		// Se encontrou um valor maior à esquerda e um menor à direita, troca-os
+		int aux = vetor[j];
+		vetor[j] = vetor[i];
+		vetor[i] = aux;
+		registro[1]++;		// Contabiliza troca
+	}
 }
 
 void quickSortCentroHoare(int* vetor, int inicio, int fim, long long* registro){
@@ -312,6 +314,75 @@ void quickSortFim(int* vetor, int inicio, int fim, long long* registro){
 		int posicaoPivo = particaoFim(vetor, inicio, fim, registro);	// Escolhe um pivô e deixa número menores à esquerda e maiores à direita
 		quickSortFim(vetor, inicio, posicaoPivo - 1, registro);	// Ordena o lado esquerdo do pivô
 		quickSortFim(vetor, posicaoPivo + 1, fim, registro);		// Ordena o lado direito do pivô
+	}
+}
+
+int particaoMediana(int* vetor, int inicio, int fim, long long* registro){
+	
+	int meio = inicio + (fim - inicio) / 2;
+	
+	// Ordena o primeiro, o do meio e o último elemento. Ao final, a mediana estará no meio.
+	registro[0]++;		// Contabiliza comparação
+	if(vetor[inicio] > vetor[meio]){
+		int aux = vetor[meio];
+		vetor[meio] = vetor[inicio];
+		vetor[inicio] = aux;
+		registro[1]++;		// Contabiliza troca
+	}
+
+	registro[0]++;		// Contabiliza comparação
+	if(vetor[inicio] > vetor[fim]){
+		int aux = vetor[fim];
+		vetor[fim] = vetor[inicio];
+		vetor[inicio] = aux;
+		registro[1]++;		// Contabiliza troca
+	}
+
+	registro[0]++;		// Contabiliza comparação
+	if(vetor[meio] > vetor[fim]){
+		int aux = vetor[fim];
+		vetor[fim] = vetor[meio];
+		vetor[meio] = aux;
+		registro[1]++;		// Contabiliza troca
+	}
+
+	// A mediana agora está no meio
+	int pivo = vetor[meio];
+	int i = inicio - 1;
+	int j = fim + 1;
+
+	while (1) {
+		// Move o ponteiro i para a direita enquanto o valor for menor que o pivô
+		do {
+			i++;
+			registro[0]++; // Contabiliza comparação
+		} while (vetor[i] < pivo);
+
+		// Move o ponteiro j para a esquerda enquanto o valor for maior que o pivô
+		do {
+			j--;
+			registro[0]++; // Contabiliza comparação
+		} while (vetor[j] > pivo);
+
+		// Se os ponteiros se cruzarem, a partição acabou
+		if (i >= j) {
+			return j;
+		}
+
+		// Se encontrou um valor maior à esquerda e um menor à direita, troca-os
+		int aux = vetor[j];
+		vetor[j] = vetor[i];
+		vetor[i] = aux;
+		registro[1]++;		// Contabiliza troca
+	}
+}
+
+void quickSortMediana(int* vetor, int inicio, int fim, long long* registro){
+	if(inicio < fim){
+		int p = particaoMediana(vetor, inicio, fim, registro);		// Escolhe um pivô e deixa número menores ou iguais à esquerda e maiores à direita
+		// Até o indice p, os números do vetor são menores ou iguais ao pivô. Depois dele, os números são maiores que o pivô
+		quickSortMediana(vetor, inicio, p, registro);		// Ordena os número menores ou iguais ao pivô
+		quickSortMediana(vetor, p + 1, fim, registro);	// Ordena os número maiores que o pivô
 	}
 }
 

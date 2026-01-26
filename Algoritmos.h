@@ -26,6 +26,7 @@ void heapSort(int* vetor, int tamanho, long long* registro);
 void quickSortFim(int* vetor, int inicio, int fim, long long* registro);
 void quickSortCentroLomuto(int* vetor, int inicio, int fim, long long* registro);
 void quickSortCentroHoare(int* vetor, int inicio, int fim, long long* registro);
+void quickSortMediana(int* vetor, int inicio, int fim, long long* registro);
 
 void bolha(int* vetor, int qtdNums, long long* registro);
 void bolhaComParada(int* vetor, int qtdNums, long long* registro);

@@ -7,7 +7,7 @@ typedef enum{
 	INSERCAO_DIRETA,
 	INSERCAO_BINARIA,
 	INSERCAO_TERNARIA,
-   SHELL_SORT,
+   SHELLSORT,
 	SELECTION_SORT,
 	HEAPSORT,
 	QUICKSORT_CENTRO_LOMUTO,
@@ -71,7 +71,7 @@ long long* ordenarNumeros(Algoritmo algoritmo){
 				case QUICKSORT_FIM:
 					quickSortFim(vetor, 0, qtdLinhas - 1, registro);
 					break;
-				case QUICKSORT_MEIDANA:
+				case QUICKSORT_MEDIANA:
 					// Chama a função
 					break;
 				case MERGESORT:
@@ -98,9 +98,9 @@ long long* ordenarNumeros(Algoritmo algoritmo){
 				case INSERCAO_TERNARIA:
 					insercaoTernaria(vetor, qtdLinhas, registro);
 					break;
-            	case SHELLSORT:
-               		shellSort(vetor, qtdLinhas, registro);
-               		break;
+				case SHELLSORT:
+					shellSort(vetor, qtdLinhas, registro);
+					break;
 			}
 
 			// Cria o arquivo que conterá os elementos ordenados
@@ -505,7 +505,7 @@ void shellSort(int* vetor, int tamanho, long long* registro){
     while(gap > 1){
         gap = gap / 3;
 
-        for(int i = h; i < tamanho; i++){
+        for(int i = gap; i < tamanho; i++){
             aux = vetor[i];
             j = i - gap;
 

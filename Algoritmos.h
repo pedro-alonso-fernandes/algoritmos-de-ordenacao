@@ -7,7 +7,7 @@ typedef enum{
 	INSERCAO_DIRETA,
 	INSERCAO_BINARIA,
 	INSERCAO_TERNARIA,
-   SHELL_SORT,
+   SHELLSORT,
 	SELECTION_SORT,
 	HEAPSORT,
 	QUICKSORT_CENTRO_LOMUTO,
@@ -19,7 +19,7 @@ typedef enum{
 	BUCKETSORT
 }Algoritmo;
 
-int* ordenarNumeros(Algoritmo algoritmo);
+long long* ordenarNumeros(Algoritmo algoritmo);
 void selectionSort(int* vetor, int qtdNums, long long* registro);
 void heapify(int* vetor, int tamanho, int raiz, long long* registro);
 void heapSort(int* vetor, int tamanho, long long* registro);

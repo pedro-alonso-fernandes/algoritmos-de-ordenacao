@@ -25,6 +25,7 @@ void quickSortFim(int* vetor, int inicio, int fim, long long* registro);
 void quickSortCentroLomuto(int* vetor, int inicio, int fim, long long* registro);
 void quickSortCentroHoare(int* vetor, int inicio, int fim, long long* registro);
 void quickSortMediana(int* vetor, int inicio, int fim, long long* registro);
+void mergeSort(int* vetor, int inicio, int tamanho, long long* registro);
 
 void bolha(int* vetor, int tamanho, long long* registro);
 void bolhaComParada(int* vetor, int tamanho, long long* registro);
@@ -76,7 +77,7 @@ long long* ordenarNumeros(Algoritmo algoritmo){
 					quickSortMediana(vetor, 0, qtdLinhas - 1, registro);
 					break;
 				case MERGESORT:
-					// Chama a função
+					mergeSort(vetor, 0, qtdLinhas, registro);
 					break;
 				case RADIXSORT:
 					// Chama a função
@@ -383,6 +384,71 @@ void quickSortMediana(int* vetor, int inicio, int fim, long long* registro){
 		// Até o indice p, os números do vetor são menores ou iguais ao pivô. Depois dele, os números são maiores que o pivô
 		quickSortMediana(vetor, inicio, p, registro);		// Ordena os número menores ou iguais ao pivô
 		quickSortMediana(vetor, p + 1, fim, registro);	// Ordena os número maiores que o pivô
+	}
+}
+/*
+ Tem que alterar sistema de contabilização de trocas. Não está coerente!
+*/
+void merge(int* vetor, int inicio, int meio, int tamanho, long long* registro){
+	// Separa o vetor em dois vetores
+	int tam_esquerda = meio - inicio;
+	int tam_direita = tamanho - meio;
+	int* vetor_esquerda = (int*) malloc(tam_esquerda * sizeof(int));	
+	int* vetor_direita = (int*) malloc(tam_direita * sizeof(int));	
+	
+	for(int i = 0; i < tam_esquerda; i++){
+		vetor_esquerda[i] = vetor[inicio + i];
+	}
+
+	for(int i = 0; i < tam_direita; i++){
+		vetor_direita[i] = vetor[meio + i];
+	}
+
+	// Ordena o vetor principal de acordo com os outros dois vetores
+	int topo_esquerda = 0;
+	int topo_direita = 0;
+	int k = inicio;
+
+	// Enquanto houver elementos nos dois vetores simultâneamente, eles serão comparados e ordenados no vetor principal
+	while (topo_esquerda < tam_esquerda && topo_direita < tam_direita) {
+        registro[0]++; // Contabiliza comparação
+        if (vetor_esquerda[topo_esquerda] <= vetor_direita[topo_direita]) {
+            vetor[k] = vetor_esquerda[topo_esquerda];
+            topo_esquerda++;
+        } else {
+            vetor[k] = vetor_direita[topo_direita];
+            topo_direita++;
+        }
+        k++;
+        registro[1]++; // Contabiliza troca
+    }
+
+    // Copia os elementos do vetor em que sobrou elementos
+    while (topo_esquerda < tam_esquerda) {
+        vetor[k] = vetor_esquerda[topo_esquerda];
+		  registro[1]++; // Contabiliza troca
+        topo_esquerda++;
+        k++;
+    }
+
+    while (topo_direita < tam_direita) {
+        vetor[k] = vetor_direita[topo_direita];
+		  registro[1]++; // Contabiliza troca
+        topo_direita++;
+        k++;
+    }
+
+    free(vetor_esquerda);
+    free(vetor_direita);
+}
+
+void mergeSort(int* vetor, int inicio, int tamanho, long long* registro){
+	// Divide o vetor em vetores menores (até chegar em um vetor de 1 elemento) e os reagrupa em um vetor ordenado
+	if(tamanho - inicio > 1){
+		int meio = inicio + (tamanho - inicio) / 2;
+		mergeSort(vetor, inicio, meio, registro);
+		mergeSort(vetor, meio, tamanho, registro);
+		merge(vetor, inicio, meio, tamanho, registro);
 	}
 }
 

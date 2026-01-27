@@ -15,9 +15,9 @@ int main(int argc, char** argv){
 	printf("--------------------------------------------------------\n");
 	
 
-	gerarNumeros(5, ALEATORIO);
+	gerarNumeros(10, ALEATORIO);
 	inicio = clock();
-	long long* registro = ordenarNumeros(QUICKSORT_MEDIANA);
+	long long* registro = ordenarNumeros(QUICKSORT_CENTRO_HOARE);
 	fim = clock();
 
 	tempo = (double)(fim - inicio) / CLOCKS_PER_SEC;

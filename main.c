@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "geranum.h"
-#include "algoritmos.h"
+#include "sort.h"
 
 int main(int argc, char** argv){
 
@@ -10,12 +10,11 @@ int main(int argc, char** argv){
 	
 
 	gerarNumeros(100, ALEATORIO);
-	double tempo = 0;
-	long long* registro = ordenarNumeros(MERGESORT, &tempo);
+	Registro* registro = ordenarNumeros(MERGESORT);
 
-	printf("Qtd Comparações: %lld\n", registro[0]);
-	printf("Qtd trocas: %lld\n", registro[1]);
-	printf("Tempo de execução: %f segundos\n", tempo);
+	printf("Qtd Comparações: %lld\n", registro->comparacoes);
+	printf("Qtd trocas: %lld\n", registro->trocas);
+	printf("Tempo de execução: %f segundos\n", registro->tempo);
 
 	printf("--------------------------------------------------------\n");
 	printf("\n");

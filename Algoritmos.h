@@ -19,7 +19,8 @@ typedef enum{
 	BUCKETSORT
 }Algoritmo;
 
-long long* ordenarNumeros(Algoritmo algoritmo);
+long long* ordenarNumeros(Algoritmo algoritmo, double* tempo);
+
 void selectionSort(int* vetor, int qtdNums, long long* registro);
 void heapify(int* vetor, int tamanho, int raiz, long long* registro);
 void heapSort(int* vetor, int tamanho, long long* registro);

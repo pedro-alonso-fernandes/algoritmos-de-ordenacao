@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <time.h>
 
 typedef enum{
 	BOLHA,
@@ -35,11 +36,14 @@ void insercaoTernaria(int* vetor, int tamanho, long long* registro);
 void shellSort(int* vetor, int tamanho, long long* registro);
 
 // Abre o arquivo "entrada.txt", carrega os valores para um vetor, e manda para algum algoritmo de ordenação
-long long* ordenarNumeros(Algoritmo algoritmo){
+long long* ordenarNumeros(Algoritmo algoritmo, double* tempo){
 	// Utilizarei o vetor registro para registrar a quantidade de comparações e trocas dentro dos algoritmos
 	long long* registro = (long long*) malloc(2 * sizeof(long long));
 	registro[0] = 0;	// A posição 0 do vetor salva as comparações
 	registro[1] = 0;	// A posição 1 do vetor salva as trocas
+	
+	clock_t cpuClock_inicio;
+	clock_t cpuClock_fim;
 	
 	FILE *arq_entrada = fopen("entrada.txt", "r");
 
@@ -52,58 +56,91 @@ long long* ordenarNumeros(Algoritmo algoritmo){
 		int* vetor = (int*) malloc(qtdLinhas * sizeof(int));
 
 		if(vetor != NULL){
-			rewind(arq_entrada);
+			rewind(arq_entrada);		// Retorna o ponteiro do arquivo para a primeira linha
 
 			for(int i = 0; i < qtdLinhas; i++)
 				fscanf(arq_entrada, "%d\n", &vetor[i]);
 
 			switch (algoritmo){
 				case SELECTION_SORT:
+					cpuClock_inicio = clock();
 					selectionSort(vetor, qtdLinhas, registro);
+					cpuClock_fim = clock();
 					break;
 				case HEAPSORT:
+					cpuClock_inicio = clock();
 					heapSort(vetor, qtdLinhas, registro);
+					cpuClock_fim = clock();
 					break;
 				case QUICKSORT_CENTRO_LOMUTO:
+					cpuClock_inicio = clock();
 					quickSortCentroLomuto(vetor, 0, qtdLinhas - 1, registro);
+					cpuClock_fim = clock();
 					break;
 				case QUICKSORT_CENTRO_HOARE:
+					cpuClock_inicio = clock();
 					quickSortCentroHoare(vetor, 0, qtdLinhas - 1, registro);
+					cpuClock_fim = clock();
 					break;
 				case QUICKSORT_FIM:
+					cpuClock_inicio = clock();
 					quickSortFim(vetor, 0, qtdLinhas - 1, registro);
+					cpuClock_fim = clock();
 					break;
 				case QUICKSORT_MEDIANA:
+					cpuClock_inicio = clock();
 					quickSortMediana(vetor, 0, qtdLinhas - 1, registro);
+					cpuClock_fim = clock();
 					break;
 				case MERGESORT:
+					cpuClock_inicio = clock();
 					mergeSort(vetor, 0, qtdLinhas, registro);
+					cpuClock_fim = clock();
 					break;
 				case RADIXSORT:
+					cpuClock_inicio = clock();
 					// Chama a função
+					cpuClock_fim = clock();
 					break;
 				case BUCKETSORT:
+					cpuClock_inicio = clock();
 					// Chama a função
+					cpuClock_fim = clock();
 					break;
 				case BOLHA:
+					cpuClock_inicio = clock();
 					bolha(vetor, qtdLinhas, registro);
+					cpuClock_fim = clock();
 					break;
 				case BOLHA_COM_PARADA:
+					cpuClock_inicio = clock();
 					bolhaComParada(vetor, qtdLinhas, registro);
+					cpuClock_fim = clock();
 					break;
 				case INSERCAO_DIRETA:
+					cpuClock_inicio = clock();
 					insercaoDireta(vetor, qtdLinhas, registro);
+					cpuClock_fim = clock();
 					break;
 				case INSERCAO_BINARIA:
+					cpuClock_inicio = clock();
 					insercaoBinaria(vetor, qtdLinhas, registro);
+					cpuClock_fim = clock();
 					break;
 				case INSERCAO_TERNARIA:
+					cpuClock_inicio = clock();
 					insercaoTernaria(vetor, qtdLinhas, registro);
+					cpuClock_fim = clock();
 					break;
 				case SHELLSORT:
+					cpuClock_inicio = clock();
 					shellSort(vetor, qtdLinhas, registro);
+					cpuClock_fim = clock();
 					break;
 			}
+
+			// Calcula tempo de execução
+			*tempo = (double) (cpuClock_fim - cpuClock_inicio) / CLOCKS_PER_SEC;		// Usa um cast (double) para contabilizar os números após a vírgula
 
 			// Cria o arquivo que conterá os elementos ordenados
 			FILE *arq_saida = fopen("saida.txt", "w");

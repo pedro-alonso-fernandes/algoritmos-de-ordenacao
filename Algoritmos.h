@@ -21,6 +21,7 @@ void quickSortCentroLomuto(int* vetor, int inicio, int fim, Registro* registro);
 void quickSortCentroHoare(int* vetor, int inicio, int fim, Registro* registro);
 void quickSortMediana(int* vetor, int inicio, int fim, Registro* registro);
 void mergeSort(int* vetor, int inicio, int tamanho, Registro* registro);
+void radixSort(int* vetor, int tamanho, Registro* registro);
 
 
 #endif

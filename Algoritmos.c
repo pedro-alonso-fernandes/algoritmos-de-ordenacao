@@ -485,7 +485,8 @@ void merge(int* vetor, int inicio, int meio, int tamanho, Registro* registro){
 
 	// Enquanto houver elementos nos dois vetores simultâneamente, eles serão comparados e ordenados no vetor principal
 	while (topo_esquerda < tam_esquerda && topo_direita < tam_direita) {
-        registro->comparacoes++; // Contabiliza comparação
+      
+		registro->comparacoes++; 	// Contabiliza comparação
         if (vetor_esquerda[topo_esquerda] <= vetor_direita[topo_direita]) {
             vetor[k] = vetor_esquerda[topo_esquerda];
             topo_esquerda++;
@@ -493,22 +494,22 @@ void merge(int* vetor, int inicio, int meio, int tamanho, Registro* registro){
             vetor[k] = vetor_direita[topo_direita];
             topo_direita++;
         }
+		  registro->trocas++;	// Contabiliza trocas
         k++;
-        registro->trocas++; // Contabiliza troca
     }
 
     // Copia os elementos do vetor em que sobrou elementos
     while (topo_esquerda < tam_esquerda) {
         vetor[k] = vetor_esquerda[topo_esquerda];
-		  registro->trocas++; // Contabiliza troca
         topo_esquerda++;
+		  registro->trocas++;	// Contabiliza trocas
         k++;
     }
 
     while (topo_direita < tam_direita) {
         vetor[k] = vetor_direita[topo_direita];
-		  registro->trocas++; // Contabiliza troca
         topo_direita++;
+		  registro->trocas++;	// Contabiliza trocas
         k++;
     }
 
@@ -526,4 +527,47 @@ void mergeSort(int* vetor, int inicio, int tamanho, Registro* registro){
 	}
 }
 
+void countingSort(int* vetor, int tamanho, int expoente, Registro* registro){
+	int* saida = (int*) malloc(tamanho * sizeof(int));
+	int count_digito[10] = {0};
 
+	if(saida != NULL){
+		for(int i = 0; i < tamanho; i++){
+			int digito = (vetor[i] / expoente) % 10;
+			count_digito[digito]++;
+		}
+
+		for(int i = 1; i < 10; i++){
+			count_digito[i] += count_digito[i - 1];
+		}
+
+		for(int i = tamanho - 1; i >= 0; i--){
+			int digito = (vetor[i] / expoente) % 10;
+			saida[count_digito[digito] - 1] = vetor[i];
+			count_digito[digito]--;
+		}
+
+		for(int i = 0; i < tamanho; i++){
+			vetor[i] = saida[i];
+			registro->trocas++;		// Contabiliza troca
+		}
+
+		free(saida);
+	}
+	else
+		printf("Erro ao alocar memória para o vetor \"saida\"!\n");
+
+}
+
+void radixSort(int* vetor, int tamanho, Registro* registro){
+	int maior = vetor[0];
+	for(int i = 1; i < tamanho; i++){
+		if(vetor[i] > maior)
+			maior = vetor[i];
+	}
+
+	for(int expoente = 1; (maior / expoente) > 0; expoente *= 10){
+		countingSort(vetor, tamanho, expoente, registro);
+	}
+
+}

@@ -93,7 +93,7 @@ Registro* ordenarNumeros(Algoritmo algoritmo){
 					break;
 				case BUCKETSORT:
 					cpuClock_inicio = clock();
-					// Chama a função
+					bucketSort(vetor, qtdNums, registro);
 					cpuClock_fim = clock();
 					break;
 				case BOLHA:

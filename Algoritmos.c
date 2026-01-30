@@ -525,26 +525,30 @@ void mergeSort(int* vetor, int inicio, int tamanho, Registro* registro){
 	}
 }
 
-void countingSort(int* vetor, int tamanho, int expoente, Registro* registro){
+void ordenarPorDigito(int* vetor, int tamanho, int expoente, Registro* registro){
 	int* saida = (int*) malloc(tamanho * sizeof(int));
-	int count_digito[10] = {0};
+	int count_digito[10] = {0};	// Separa uma posição do vetor para cada algarismo (0 a 9)
 
 	if(saida != NULL){
+		// Conta quantos elementos diferentes tem o mesmo algarismo na referida casa decimal
 		for(int i = 0; i < tamanho; i++){
 			int digito = (vetor[i] / expoente) % 10;
 			count_digito[digito]++;
 		}
 
+		// Ajusta a posição de cada algarismo de acordo com a sua quantidade
 		for(int i = 1; i < 10; i++){
 			count_digito[i] += count_digito[i - 1];
 		}
 
+		// Cria um vetor já inserindo de forma ordenada
 		for(int i = tamanho - 1; i >= 0; i--){
 			int digito = (vetor[i] / expoente) % 10;
 			saida[count_digito[digito] - 1] = vetor[i];
 			count_digito[digito]--;
 		}
 
+		// Copia o vetor ordenado para o vetor principal
 		for(int i = 0; i < tamanho; i++){
 			vetor[i] = saida[i];
 			registro->trocas++;		// Contabiliza troca
@@ -564,8 +568,10 @@ void radixSort(int* vetor, int tamanho, Registro* registro){
 			maior = vetor[i];
 	}
 
+	// Ordena o vetor pelos dígitos, indo sempre pelo dígito menos relevante (primeiro unidade
+	// depois centena, e assim por diante)
 	for(int expoente = 1; (maior / expoente) > 0; expoente *= 10){
-		countingSort(vetor, tamanho, expoente, registro);
+		ordenarPorDigito(vetor, tamanho, expoente, registro);
 	}
 
 }	
@@ -590,84 +596,95 @@ void insertionSortBucket(int* vetor, int inicio, int fim, Registro* registro) {
 }
 
 void bucketSort(int* vetor, int tamanho, Registro* registro) {
-    if (n <= 0) return;
 
-    // Achar maior e menor para definir o intervalo
-    int maior = vetor[0];
+   // Achar maior e menor para definir o intervalo
+   int maior = vetor[0];
 	int menor = vetor[0];
-    for (int i = 1; i < n; i++) {
-        if (vetor[i] > maior) 
+	for (int i = 1; i < tamanho; i++) {
+		if (vetor[i] > maior){
 			maior = vetor[i];
-        else if (vetor[i] < menor) 
+		}
+		else if (vetor[i] < menor) {
 			menor = vetor[i];
-    }
+		}
+	}
 
 	// Verifica se todos os elementos do vetor são iguais
-    if (maior == menor) 
+	if (maior == menor) 
 		return; 
 
-    int num_baldes = tamanho;
-    int* cont_baldes = (int*) malloc(num_baldes * sizeof(int));	// Armazenamena quantos elementos tem cada balde
-    int* inicio_baldes = (int*) malloc(num_baldes * sizeof(int));	// Armazena o início de cada balde
-    int* aux_vetor = (int*) malloc(tamanho * sizeof(int));	// vetor auxiliar que será ordenado
+	int num_baldes = tamanho;
+	// Armazenamena quantos elementos tem cada balde. Usei calloc para criar o vetor zerado
+	int* cont_baldes = (int*) calloc(num_baldes, sizeof(int));
+	// Armazena o início de cada balde
+	int* inicio_baldes = (int*) malloc(num_baldes * sizeof(int));	
+	// Vetor auxiliar que será ordenado
+	int* aux_vetor = (int*) malloc(tamanho * sizeof(int));
+	// Vetor auxiliar para não perder os índices originais dos inícios dos baldes
+	int* aux_inicio_baldes = (int*) malloc(num_baldes * sizeof(int));
 
-    double elementos_por_baldes = (double)(maior - menor + 1) / num_baldes;
-	
+	// Verifica se conseguiu alocar memória para todos os vetores acima
+	if(cont_baldes == NULL || inicio_baldes == NULL || aux_vetor == NULL || aux_inicio_baldes == NULL){
+		printf("Erro ao alocar memória para os vetores do Bucket Sort!\n");
+		return;
+	}
+
+	double elementos_por_baldes = (double)(maior - menor + 1) / num_baldes;
+
 	// Calcula um indice do balde para cada elemento do vetor
-    for (int i = 0; i < tamanho; i++) {
-        
-		int indice_balde = (int)((vetor[i] - menor) / elementos_por_baldes);
-        
-		// Corrigi indice que não é menor que a quantidade de baldes. Isso pode acontecer
-		// devido ao truncamento
-		if (indice_balde >= num_baldes) {
-			indice_balde = num_baldes - 1;
-		}
-        
-		cont_baldes[indice_balde]++;
-    }
+	for (int i = 0; i < tamanho; i++) {
+		
+	int indice_balde = (int)((vetor[i] - menor) / elementos_por_baldes);
+		
+	// Corrigi indice que não é menor que a quantidade de baldes. Isso pode acontecer
+	// devido ao truncamento
+	if (indice_balde >= num_baldes) {
+		indice_balde = num_baldes - 1;
+	}
+		
+	cont_baldes[indice_balde]++;
+	}
 
 	// Define início de cada balde
-    inicio_baldes[0] = 0;
-    for (int i = 1; i < num_baldes; i++) {
-        inicio_baldes[i] = inicio_baldes[i - 1] + cont_baldes[i - 1];
-    }
+	inicio_baldes[0] = 0;
+	for (int i = 1; i < num_baldes; i++) {
+		inicio_baldes[i] = inicio_baldes[i - 1] + cont_baldes[i - 1];
+	}
 
-    // Vetor temporário para não perder os índices originais durante a distribuição
-    int* aux_inicio_baldes = (int*) malloc(num_baldes * sizeof(int));
-    for(int i = 0; i < num_baldes; i++){ 
+	
+	for(int i = 0; i < num_baldes; i++){ 
 		aux_inicio_baldes[i] = inicio_baldes[i];
 	}
 
-    // Distribuir os elementos nos baldes
-    for (int i = 0; i < tamanho; i++) {
-        int indice_balde = (int)((vetor[i] - menor) / elementos_por_baldes);
-        
-		if (indice_balde >= num_baldes){
-			indice_balde = num_baldes - 1;
+	// Distribuir os elementos nos baldes
+	for (int i = 0; i < tamanho; i++) {
+		int indice_balde = (int)((vetor[i] - menor) / elementos_por_baldes);
+		
+	if (indice_balde >= num_baldes){
+		indice_balde = num_baldes - 1;
+	}
+		aux_vetor[aux_inicio_baldes[indice_balde]] = vetor[i];
+		aux_inicio_baldes[indice_balde]++;
+	}
+
+	// Ordena cada balde com insertion sort (inserção direta)
+	for (int i = 0; i < num_baldes; i++) {
+		int inicio_balde = inicio_baldes[i];
+		int fim_balde = aux_inicio_baldes[i] - 1;
+		if (inicio_balde < fim_balde) {
+			insertionSortBucket(aux_vetor, inicio_balde, fim_balde, registro);
 		}
-        aux_vetor[aux_inicio_baldes[indice_balde]] = vetor[i];
-        aux_inicio_baldes[indice_balde]++;
-        registro->trocas++; // Movimentação para o auxiliar
-    }
+	}
 
-    // Ordena cada balde
-    for (int i = 0; i < num_baldes; i++) {
-        int inicio_balde = inicio_baldes[i];
-        int fim_balde = aux_inicio_baldes[i] - 1;
-        if (inicio_balde < fim_balde) {
-            insercaoDireta(aux_vetor, inicio_balde, fim_balde, registro);
-        }
-    }
+	// Copia os baldes ordenados para o vetor principal
+	for (int i = 0; i < tamanho; i++) {
+		vetor[i] = aux_vetor[i];
+		registro->trocas++;	// Contabiliza troca
+	}
 
-    // Copia os baldes já ordenados para o vetor principal
-    for (int i = 0; i < tamanho; i++) {
-        vetor[i] = aux_vetor[i];
-        registro->trocas++; // Movimentação de volta
-    }
+	free(cont_baldes);
+	free(inicio_baldes);
+	free(aux_inicio_baldes);
+	free(aux_vetor);
 
-    free(cont_baldes);
-    free(inicio_baldes);
-    free(aux_inicio_baldes);
-    free(aux_vetor);
 }

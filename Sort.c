@@ -42,11 +42,12 @@ Registro* ordenarNumeros(Algoritmo algoritmo){
 		while(fscanf(arq_entrada, "%d\n", &temp) == 1)
 			qtdNums++;
 
-		int* vetor = (int*) malloc(qtdNums * sizeof(int));
+		int* vetor = (int*) calloc(qtdNums, sizeof(int));
 
 		if(vetor != NULL){
 			rewind(arq_entrada);		// Retorna o ponteiro do arquivo para a primeira linha
 
+			// Lê o arquivo e guarda no vetor
 			for(int i = 0; i < qtdNums; i++)
 				fscanf(arq_entrada, "%d\n", &vetor[i]);
 

@@ -10,7 +10,7 @@ int main(int argc, char** argv){
 	
 
 	gerarNumeros(100, ALEATORIO);
-	Registro* registro = ordenarNumeros(MERGESORT);
+	Registro* registro = ordenarNumeros(BUCKETSORT);
 
 	printf("Qtd Comparações: %lld\n", registro->comparacoes);
 	printf("Qtd trocas: %lld\n", registro->trocas);

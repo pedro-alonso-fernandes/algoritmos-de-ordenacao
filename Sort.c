@@ -23,7 +23,7 @@ typedef enum{
 }Algoritmo;
 
 // Abre o arquivo "entrada.txt", carrega os valores para um vetor, e manda para algum algoritmo de ordenação
-Registro* ordenarNumeros(Algoritmo algoritmo){
+Registro* ordenarNumeros(Algoritmo algoritmo, char* metodoGeracao){
 	
 	// Utilizarei a struct registro para registrar a quantidade de comparações, de trocas e o tempo 
 	// de execução dentro dos algoritmos
@@ -35,7 +35,9 @@ Registro* ordenarNumeros(Algoritmo algoritmo){
 	clock_t cpuClock_inicio;
 	clock_t cpuClock_fim;
 	
-	FILE *arq_entrada = fopen("resultados/entrada.txt", "r");
+	char nomeArquivo[42];
+	snprintf(nomeArquivo, sizeof(nomeArquivo), "resultados/%s/entrada.txt", metodoGeracao);
+	FILE *arq_entrada = fopen(nomeArquivo, "r");
 
 	if(arq_entrada != NULL){
 		int qtdNums = 0;
@@ -54,94 +56,95 @@ Registro* ordenarNumeros(Algoritmo algoritmo){
 
 			// Salva o nome do algoritmo escolhido em uma string e chama o algoritmo para ordenar o vetor,
 			// marcando seu tempo de execução
-			char algoritmo_string[25];
+			int tam_nome = 25;
+			registro->nome_algoritmo = (char*) malloc(tam_nome * sizeof(char));
 			switch (algoritmo){
 				case BOLHA:
-					snprintf(algoritmo_string, sizeof(algoritmo_string), "Bolha");
+					snprintf(registro->nome_algoritmo, tam_nome, "Bolha");
 					cpuClock_inicio = clock();
 					bolha(vetor, qtdNums, registro);
 					cpuClock_fim = clock();
 					break;
 				case BOLHA_COM_PARADA:
-					snprintf(algoritmo_string, sizeof(algoritmo_string), "Bolha_Com_Parada");
+					snprintf(registro->nome_algoritmo, tam_nome, "Bolha_Com_Parada");
 					cpuClock_inicio = clock();
 					bolhaComParada(vetor, qtdNums, registro);
 					cpuClock_fim = clock();
 					break;
 				case INSERCAO_DIRETA:
-					snprintf(algoritmo_string, sizeof(algoritmo_string), "Insercao_Direta");
+					snprintf(registro->nome_algoritmo, tam_nome, "Insercao_Direta");
 					cpuClock_inicio = clock();
 					insercaoDireta(vetor, qtdNums, registro);
 					cpuClock_fim = clock();
 					break;
 				case INSERCAO_BINARIA:
-					snprintf(algoritmo_string, sizeof(algoritmo_string), "Insercao_Binaria");
+					snprintf(registro->nome_algoritmo, tam_nome, "Insercao_Binaria");
 					cpuClock_inicio = clock();
 					insercaoBinaria(vetor, qtdNums, registro);
 					cpuClock_fim = clock();
 					break;
 				case INSERCAO_TERNARIA:
-					snprintf(algoritmo_string, sizeof(algoritmo_string), "Insercao_Ternaria");
+					snprintf(registro->nome_algoritmo, tam_nome, "Insercao_Ternaria");
 					cpuClock_inicio = clock();
 					insercaoTernaria(vetor, qtdNums, registro);
 					cpuClock_fim = clock();
 					break;
 				case SHELLSORT:
-					snprintf(algoritmo_string, sizeof(algoritmo_string), "ShellSort");
+					snprintf(registro->nome_algoritmo, tam_nome, "ShellSort");
 					cpuClock_inicio = clock();
 					shellSort(vetor, qtdNums, registro);
 					cpuClock_fim = clock();
 					break;
 				case SELECTION_SORT:
-					snprintf(algoritmo_string, sizeof(algoritmo_string), "Selection_Sort");
+					snprintf(registro->nome_algoritmo, tam_nome, "Selection_Sort");
 					cpuClock_inicio = clock();
 					selectionSort(vetor, qtdNums, registro);
 					cpuClock_fim = clock();
 					break;
 				case HEAPSORT:
-					snprintf(algoritmo_string, sizeof(algoritmo_string), "HeapSort");
+					snprintf(registro->nome_algoritmo, tam_nome, "HeapSort");
 					cpuClock_inicio = clock();
 					heapSort(vetor, qtdNums, registro);
 					cpuClock_fim = clock();
 					break;
 				case QUICKSORT_CENTRO_LOMUTO:
-					snprintf(algoritmo_string, sizeof(algoritmo_string), "QuickSort_Centro_Lomuto");
+					snprintf(registro->nome_algoritmo, tam_nome, "QuickSort_Centro_Lomuto");
 					cpuClock_inicio = clock();
 					quickSortCentroLomuto(vetor, 0, qtdNums - 1, registro);
 					cpuClock_fim = clock();
 					break;
 				case QUICKSORT_CENTRO_HOARE:
-					snprintf(algoritmo_string, sizeof(algoritmo_string), "QuickSort_Centro_Hoare");
+					snprintf(registro->nome_algoritmo, tam_nome, "QuickSort_Centro_Hoare");
 					cpuClock_inicio = clock();
 					quickSortCentroHoare(vetor, 0, qtdNums - 1, registro);
 					cpuClock_fim = clock();
 					break;
 				case QUICKSORT_FIM:
-					snprintf(algoritmo_string, sizeof(algoritmo_string), "QuickSort_Fim");
+					snprintf(registro->nome_algoritmo, tam_nome, "QuickSort_Fim");
 					cpuClock_inicio = clock();
 					quickSortFim(vetor, 0, qtdNums - 1, registro);
 					cpuClock_fim = clock();
 					break;
 				case QUICKSORT_MEDIANA:
-					snprintf(algoritmo_string, sizeof(algoritmo_string), "QuickSort_Mediana");
+					snprintf(registro->nome_algoritmo, tam_nome, "QuickSort_Mediana");
 					cpuClock_inicio = clock();
 					quickSortMediana(vetor, 0, qtdNums - 1, registro);
 					cpuClock_fim = clock();
 					break;
 				case MERGESORT:
-					snprintf(algoritmo_string, sizeof(algoritmo_string), "MergeSort");
+					snprintf(registro->nome_algoritmo, tam_nome, "MergeSort");
 					cpuClock_inicio = clock();
 					mergeSort(vetor, 0, qtdNums, registro);
 					cpuClock_fim = clock();
 					break;
 				case RADIXSORT:
-					snprintf(algoritmo_string, sizeof(algoritmo_string), "RadixSort");
+					snprintf(registro->nome_algoritmo, tam_nome, "RadixSort");
 					cpuClock_inicio = clock();
 					radixSort(vetor, qtdNums, registro);
 					cpuClock_fim = clock();
 					break;
 				case BUCKETSORT:
-					snprintf(algoritmo_string, sizeof(algoritmo_string), "BucketSort");
+					snprintf(registro->nome_algoritmo, tam_nome, "BucketSort");
 					cpuClock_inicio = clock();
 					bucketSort(vetor, qtdNums, registro);
 					cpuClock_fim = clock();
@@ -153,8 +156,8 @@ Registro* ordenarNumeros(Algoritmo algoritmo){
 			registro->tempo = (double) (cpuClock_fim - cpuClock_inicio) / CLOCKS_PER_SEC;		
 
 			// Cria o arquivo que conterá os elementos ordenados
-			char nomeArquivo[50];
-			snprintf(nomeArquivo, sizeof(nomeArquivo), "resultados/saida_%s.txt", algoritmo_string);
+			char nomeArquivo[65];
+			snprintf(nomeArquivo, sizeof(nomeArquivo), "resultados/%s/saida_%s.txt", metodoGeracao, registro->nome_algoritmo);
 			FILE *arq_saida = fopen(nomeArquivo, "w");
 
 			if(arq_saida != NULL){

@@ -8,5 +8,6 @@ typedef enum{
 }MetodoGeracao;
 
 void gerarNumeros(int qtd, MetodoGeracao metodo);
+char* getStringMetodoGeracao(MetodoGeracao metodo);
 
 #endif

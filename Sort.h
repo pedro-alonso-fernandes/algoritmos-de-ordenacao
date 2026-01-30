@@ -21,6 +21,6 @@ typedef enum{
 	BUCKETSORT
 }Algoritmo;
 
-Registro* ordenarNumeros(Algoritmo algoritmo);
+Registro* ordenarNumeros(Algoritmo algoritmo, char* metodoGeracao);
 
 #endif

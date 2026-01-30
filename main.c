@@ -3,22 +3,117 @@
 #include "geranum.h"
 #include "sort.h"
 
+// Importa as bibliotecas necessárias de acordo com o Sistema Operacional
+#ifdef _WIN32
+	#include <io.h>		// Importa o _access
+	#include <direct.h>	// Importa o _mkdir
+	#define EXISTE_PASTA(caminho) (_access(caminho, 0) == 0)
+	#define CRIAR_PASTA(nome) _mkdir(nome)
+#else
+	#include <unistd.h>		//	Importa o access
+	#include <sys/stat.h>	// Importa o mkdir
+	#include <sys/types.h>	// Importei por garantia
+	#define EXISTE_PASTA(caminho) (access(caminho, F_OK) == 0)
+	#define CRIAR_PASTA(nome) mkdir(nome, 0755)	// 0755 é a permisão da pasta: Dono pode tudo e o resto pode ler e abrir
+
+#endif
+
 int main(int argc, char** argv){
 
-	printf("\n");
-	printf("--------------------------------------------------------\n");
+	// Caso não exista, cria pasta que ficarão os arquivos de resultado do código
+	if(!EXISTE_PASTA("resultados")){
+		CRIAR_PASTA("resultados");
+		CRIAR_PASTA("resultados/aleatorio");
+		CRIAR_PASTA("resultados/crescente");
+		CRIAR_PASTA("resultados/decrescente");
+	}
+	else {
+		if(!EXISTE_PASTA("resultados/aleatorio")){
+			CRIAR_PASTA("resultados/aleatorio");
+		}
+		if(!EXISTE_PASTA("resultados/crescente")){
+			CRIAR_PASTA("resultados/crescente");
+		}
+		if(!EXISTE_PASTA("resultados/decrescente")){
+			CRIAR_PASTA("resultados/decrescente");
+		}
+	}
+
 	
+	printf("\n");
+	printf("--------------------------------------------------------\n\n");
+	
+	MetodoGeracao metodos[3] = {
+		ALEATORIO,
+		CRESCENTE,
+		DECRESCENTE
+	};
 
-	gerarNumeros(100, ALEATORIO);
-	Registro* registro = ordenarNumeros(BUCKETSORT);
+	Algoritmo algoritmos[15] = {
+		BOLHA,
+		BOLHA_COM_PARADA,
+		INSERCAO_DIRETA,
+		INSERCAO_BINARIA,
+		INSERCAO_TERNARIA,
+		SHELLSORT,
+		SELECTION_SORT,
+		HEAPSORT,
+		QUICKSORT_CENTRO_LOMUTO,
+		QUICKSORT_CENTRO_HOARE,
+		QUICKSORT_FIM,
+		QUICKSORT_MEDIANA,
+		MERGESORT,
+		RADIXSORT,
+		BUCKETSORT
+	};
 
-	printf("Qtd Comparações: %lld\n", registro->comparacoes);
-	printf("Qtd trocas: %lld\n", registro->trocas);
-	printf("Tempo de execução: %f segundos\n", registro->tempo);
+	// For para utilizar os três métodos de geração de números
+	for(int i = 0; i < 3; i++){
+		int qtdNums = 10000;	// 10 mil
 
-	printf("--------------------------------------------------------\n");
+		char* metodoGeracao = getStringMetodoGeracao(metodos[i]);
+		char nomeArquivo[42];
+		snprintf(nomeArquivo, sizeof(nomeArquivo), "resultados/%s/%s.csv", metodoGeracao, metodoGeracao);
+		FILE* arquivo = fopen(nomeArquivo, "w");
+		fprintf(arquivo, "Algoritmo,Tamanho,Comparacoes,Trocas,Tempo_(s)\n");
+
+		// For para utilizar 10 mil, 100 mil e 500 mil como qtdNums
+		for(int j = 0; j < 3; j++){
+			if(j == 1){
+				qtdNums *= 10;
+				fprintf(arquivo, "\n");
+			}
+			else if(j == 2){
+				fprintf(arquivo, "\n");
+				qtdNums *= 5;
+			}	
+			
+			printf("%s - %d mil:\n\n", metodoGeracao, qtdNums / 1000);
+
+			gerarNumeros(qtdNums, metodos[i]);
+			// For para utilizar todos os algoritmos
+			for(int k = 0; k < 15; k++){
+				Registro* registro = ordenarNumeros(algoritmos[k], metodoGeracao);
+				printf("Algoritmo: %s\n", registro->nome_algoritmo);
+				printf("Qtd Comparações: %lld\n", registro->comparacoes);
+				printf("Qtd trocas: %lld\n", registro->trocas);
+				printf("Tempo de execução: %f segundos\n", registro->tempo);
+				printf("\n");
+				
+				fprintf(arquivo, "%s,%d,%lld,%lld,%f\n", registro->nome_algoritmo, qtdNums, registro->comparacoes, 
+				registro->trocas, registro->tempo);
+				free(registro);
+			}
+			printf("\n");
+
+		}
+
+		fclose(arquivo);
+		free(metodoGeracao);
+		printf("--------------------------------------------------------\n");
+	}
+
 	printf("\n");
 
-	free(registro);
 	return 0;
 }

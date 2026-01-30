@@ -5,6 +5,7 @@ typedef struct{
 	long long comparacoes;
 	long long trocas;
 	double tempo;
+	char* nome_algoritmo;
 }Registro;
 
 void bolha(int* vetor, int tamanho, Registro* registro){

@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
+#include <string.h>
 #include "algoritmos.h"
 
 typedef enum{
@@ -34,7 +35,7 @@ Registro* ordenarNumeros(Algoritmo algoritmo){
 	clock_t cpuClock_inicio;
 	clock_t cpuClock_fim;
 	
-	FILE *arq_entrada = fopen("entrada.txt", "r");
+	FILE *arq_entrada = fopen("resultados/entrada.txt", "r");
 
 	if(arq_entrada != NULL){
 		int qtdNums = 0;
@@ -51,80 +52,98 @@ Registro* ordenarNumeros(Algoritmo algoritmo){
 			for(int i = 0; i < qtdNums; i++)
 				fscanf(arq_entrada, "%d\n", &vetor[i]);
 
+			// Salva o nome do algoritmo escolhido em uma string e chama o algoritmo para ordenar o vetor,
+			// marcando seu tempo de execução
+			char algoritmo_string[25];
 			switch (algoritmo){
-				case SELECTION_SORT:
-					cpuClock_inicio = clock();
-					selectionSort(vetor, qtdNums, registro);
-					cpuClock_fim = clock();
-					break;
-				case HEAPSORT:
-					cpuClock_inicio = clock();
-					heapSort(vetor, qtdNums, registro);
-					cpuClock_fim = clock();
-					break;
-				case QUICKSORT_CENTRO_LOMUTO:
-					cpuClock_inicio = clock();
-					quickSortCentroLomuto(vetor, 0, qtdNums - 1, registro);
-					cpuClock_fim = clock();
-					break;
-				case QUICKSORT_CENTRO_HOARE:
-					cpuClock_inicio = clock();
-					quickSortCentroHoare(vetor, 0, qtdNums - 1, registro);
-					cpuClock_fim = clock();
-					break;
-				case QUICKSORT_FIM:
-					cpuClock_inicio = clock();
-					quickSortFim(vetor, 0, qtdNums - 1, registro);
-					cpuClock_fim = clock();
-					break;
-				case QUICKSORT_MEDIANA:
-					cpuClock_inicio = clock();
-					quickSortMediana(vetor, 0, qtdNums - 1, registro);
-					cpuClock_fim = clock();
-					break;
-				case MERGESORT:
-					cpuClock_inicio = clock();
-					mergeSort(vetor, 0, qtdNums, registro);
-					cpuClock_fim = clock();
-					break;
-				case RADIXSORT:
-					cpuClock_inicio = clock();
-					radixSort(vetor, qtdNums, registro);
-					cpuClock_fim = clock();
-					break;
-				case BUCKETSORT:
-					cpuClock_inicio = clock();
-					bucketSort(vetor, qtdNums, registro);
-					cpuClock_fim = clock();
-					break;
 				case BOLHA:
+					snprintf(algoritmo_string, sizeof(algoritmo_string), "Bolha");
 					cpuClock_inicio = clock();
 					bolha(vetor, qtdNums, registro);
 					cpuClock_fim = clock();
 					break;
 				case BOLHA_COM_PARADA:
+					snprintf(algoritmo_string, sizeof(algoritmo_string), "Bolha_Com_Parada");
 					cpuClock_inicio = clock();
 					bolhaComParada(vetor, qtdNums, registro);
 					cpuClock_fim = clock();
 					break;
 				case INSERCAO_DIRETA:
+					snprintf(algoritmo_string, sizeof(algoritmo_string), "Insercao_Direta");
 					cpuClock_inicio = clock();
 					insercaoDireta(vetor, qtdNums, registro);
 					cpuClock_fim = clock();
 					break;
 				case INSERCAO_BINARIA:
+					snprintf(algoritmo_string, sizeof(algoritmo_string), "Insercao_Binaria");
 					cpuClock_inicio = clock();
 					insercaoBinaria(vetor, qtdNums, registro);
 					cpuClock_fim = clock();
 					break;
 				case INSERCAO_TERNARIA:
+					snprintf(algoritmo_string, sizeof(algoritmo_string), "Insercao_Ternaria");
 					cpuClock_inicio = clock();
 					insercaoTernaria(vetor, qtdNums, registro);
 					cpuClock_fim = clock();
 					break;
 				case SHELLSORT:
+					snprintf(algoritmo_string, sizeof(algoritmo_string), "ShellSort");
 					cpuClock_inicio = clock();
 					shellSort(vetor, qtdNums, registro);
+					cpuClock_fim = clock();
+					break;
+				case SELECTION_SORT:
+					snprintf(algoritmo_string, sizeof(algoritmo_string), "Selection_Sort");
+					cpuClock_inicio = clock();
+					selectionSort(vetor, qtdNums, registro);
+					cpuClock_fim = clock();
+					break;
+				case HEAPSORT:
+					snprintf(algoritmo_string, sizeof(algoritmo_string), "HeapSort");
+					cpuClock_inicio = clock();
+					heapSort(vetor, qtdNums, registro);
+					cpuClock_fim = clock();
+					break;
+				case QUICKSORT_CENTRO_LOMUTO:
+					snprintf(algoritmo_string, sizeof(algoritmo_string), "QuickSort_Centro_Lomuto");
+					cpuClock_inicio = clock();
+					quickSortCentroLomuto(vetor, 0, qtdNums - 1, registro);
+					cpuClock_fim = clock();
+					break;
+				case QUICKSORT_CENTRO_HOARE:
+					snprintf(algoritmo_string, sizeof(algoritmo_string), "QuickSort_Centro_Hoare");
+					cpuClock_inicio = clock();
+					quickSortCentroHoare(vetor, 0, qtdNums - 1, registro);
+					cpuClock_fim = clock();
+					break;
+				case QUICKSORT_FIM:
+					snprintf(algoritmo_string, sizeof(algoritmo_string), "QuickSort_Fim");
+					cpuClock_inicio = clock();
+					quickSortFim(vetor, 0, qtdNums - 1, registro);
+					cpuClock_fim = clock();
+					break;
+				case QUICKSORT_MEDIANA:
+					snprintf(algoritmo_string, sizeof(algoritmo_string), "QuickSort_Mediana");
+					cpuClock_inicio = clock();
+					quickSortMediana(vetor, 0, qtdNums - 1, registro);
+					cpuClock_fim = clock();
+					break;
+				case MERGESORT:
+					snprintf(algoritmo_string, sizeof(algoritmo_string), "MergeSort");
+					cpuClock_inicio = clock();
+					mergeSort(vetor, 0, qtdNums, registro);
+					cpuClock_fim = clock();
+					break;
+				case RADIXSORT:
+					snprintf(algoritmo_string, sizeof(algoritmo_string), "RadixSort");
+					cpuClock_inicio = clock();
+					radixSort(vetor, qtdNums, registro);
+					cpuClock_fim = clock();
+					break;
+				case BUCKETSORT:
+					snprintf(algoritmo_string, sizeof(algoritmo_string), "BucketSort");
+					cpuClock_inicio = clock();
+					bucketSort(vetor, qtdNums, registro);
 					cpuClock_fim = clock();
 					break;
 			}
@@ -134,7 +153,9 @@ Registro* ordenarNumeros(Algoritmo algoritmo){
 			registro->tempo = (double) (cpuClock_fim - cpuClock_inicio) / CLOCKS_PER_SEC;		
 
 			// Cria o arquivo que conterá os elementos ordenados
-			FILE *arq_saida = fopen("saida.txt", "w");
+			char nomeArquivo[50];
+			snprintf(nomeArquivo, sizeof(nomeArquivo), "resultados/saida_%s.txt", algoritmo_string);
+			FILE *arq_saida = fopen(nomeArquivo, "w");
 
 			if(arq_saida != NULL){
 				for(int i = 0; i < qtdNums; i++){

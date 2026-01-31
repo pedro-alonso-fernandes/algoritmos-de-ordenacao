@@ -42,12 +42,6 @@ int main(int argc, char** argv){
 	
 	printf("\n");
 	printf("--------------------------------------------------------\n\n");
-	
-	MetodoGeracao metodos[3] = {
-		ALEATORIO,
-		CRESCENTE,
-		DECRESCENTE
-	};
 
 	Algoritmo algoritmos[15] = {
 		BOLHA,
@@ -67,13 +61,48 @@ int main(int argc, char** argv){
 		BUCKETSORT
 	};
 
-	// For para utilizar os três métodos de geração de números
-	for(int i = 0; i < 3; i++){
-		int qtdNums = 10000;	// 10 mil
+	int escolha = -1;
+	while(escolha != 0){
+		printf("Escolha um método de geração de números:\n");
+		printf("1 - Aleatório\n");
+		printf("2 - Crescente\n");
+		printf("3 - Decrescente\n");
+		printf("0 - Encerrar programa\n");
+		printf("\n");
+		printf("Digite: ");
+		scanf("%d", &escolha);
+		printf("\n");
+		
+		if(escolha == 0)
+			continue;
+		else if(escolha != 1 && escolha != 2 && escolha != 3){
+			printf("--------------------------------------------------------\n");
+			printf("Opção inválida! Escolha uma opção válida\n");
+			printf("--------------------------------------------------------\n\n");
+			continue;
+		}
 
-		char* metodoGeracao = getStringMetodoGeracao(metodos[i]);
+	
+	
+		printf("--------------------------------------------------------\n\n");
+
+		MetodoGeracao metodo;
+		switch(escolha){
+			case 1:
+				metodo = ALEATORIO;
+				break;
+			case 2:
+				metodo = CRESCENTE;
+				break;
+			case 3:
+				metodo = DECRESCENTE;
+				break;
+		}
+		
+		int qtdNums = 10000;	// 10 mil
+		char* string_metodo = getStringMetodoGeracao(metodo);
 		char nomeArquivo[42];
-		snprintf(nomeArquivo, sizeof(nomeArquivo), "resultados/%s/%s.csv", metodoGeracao, metodoGeracao);
+		snprintf(nomeArquivo, sizeof(nomeArquivo), "resultados/%s/%s.csv", string_metodo, string_metodo);
 		FILE* arquivo = fopen(nomeArquivo, "w");
 		fprintf(arquivo, "Algoritmo,Tamanho,Comparacoes,Trocas,Tempo_(s)\n");
 
@@ -88,12 +117,12 @@ int main(int argc, char** argv){
 				qtdNums *= 5;
 			}	
 			
-			printf("%s - %d mil:\n\n", metodoGeracao, qtdNums / 1000);
+			printf("%s - %d mil:\n\n", string_metodo, qtdNums / 1000);
 
-			gerarNumeros(qtdNums, metodos[i]);
+			gerarNumeros(qtdNums, metodo);
 			// For para utilizar todos os algoritmos
 			for(int k = 0; k < 15; k++){
-				Registro* registro = ordenarNumeros(algoritmos[k], metodoGeracao);
+				Registro* registro = ordenarNumeros(algoritmos[k], string_metodo);
 				printf("Algoritmo: %s\n", registro->nome_algoritmo);
 				printf("Qtd Comparações: %lld\n", registro->comparacoes);
 				printf("Qtd trocas: %lld\n", registro->trocas);
@@ -109,9 +138,9 @@ int main(int argc, char** argv){
 		}
 
 		fclose(arquivo);
-		free(metodoGeracao);
-		printf("--------------------------------------------------------\n");
+		free(string_metodo);
 	}
+	printf("--------------------------------------------------------\n");
 
 	printf("\n");
 

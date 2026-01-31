@@ -236,16 +236,18 @@ void heapify(int* vetor, int tamanho, int raiz, Registro* registro){
 	int direita = (2 * raiz) + 2;		// Conta para lidar um array como uma árvore binária. Isso pega o filho à direita
 
 	// Verifica se existe um filho à esquerda, e verifica se o filho da esquerda é maior do que a raiz
-	registro->comparacoes++;		// Contabiliza comparação
-	if(esquerda < tamanho && vetor[esquerda] > vetor[maior]){
-		maior = esquerda;
+	if(esquerda < tamanho){
+		registro->comparacoes++;		// Contabiliza comparação
+		if(vetor[esquerda] > vetor[maior])
+			maior = esquerda;
 	}
 
 	// Verifica se existe filho à direita, e verifica se o filho da direita é maior do que o maior número conhecido 
 	// até agora (Seja a raiz, ou o filho da esquerda)
-	registro->comparacoes++;		// Contabiliza comparação
-	if(direita < tamanho && vetor[direita] > vetor[maior]){
-		maior = direita;
+	if(direita < tamanho) {
+		registro->comparacoes++;		// Contabiliza comparação
+		if(vetor[direita] > vetor[maior])
+			maior = direita;
 	}
 
 	// Se o maior valor não for a raiz, troca de posição com a raiz e heapifica (deixar em max heap) a "nova subárvore"
@@ -286,26 +288,35 @@ int particaoCentroLomuto(int* vetor, int inicio, int fim, Registro* registro){
 	int posicaoPivo = inicio;
 
 	// Move o pivô para o último elemento do vetor
-	int aux = vetor[fim];
-	vetor[fim] = vetor[centro];
-	vetor[centro] = aux;
-	registro->trocas++;		// Contabiliza troca
+	if(centro != fim){
+		int aux = vetor[fim];
+		vetor[fim] = vetor[centro];
+		vetor[centro] = aux;
+		registro->trocas++;		// Contabiliza troca
+	}
 
 	for(int j = inicio; j < fim; j++){
 		
 		registro->comparacoes++;		// Contabiliza comparação
 		if(vetor[j] <= pivo){
-			int aux = vetor[posicaoPivo];
-			vetor[posicaoPivo] = vetor[j];
-			vetor[j] = aux;
-			registro->trocas++;		// Contabiliza troca
+			// Só troca (e conta) se os elementos estiverem em posições diferentes
+			if(posicaoPivo != j){
+				int aux = vetor[posicaoPivo];
+				vetor[posicaoPivo] = vetor[j];
+				vetor[j] = aux;
+				registro->trocas++;		// Contabiliza troca
+			}
 			posicaoPivo++;
 		}
 	}
-	aux = vetor[posicaoPivo];
-	vetor[posicaoPivo] = vetor[fim];
-	vetor[fim] = aux;
-	registro->trocas++;		// Contabiliza troca
+
+	// Coloca o pivô na posição correta
+	if(posicaoPivo != fim){
+		int aux = vetor[posicaoPivo];
+		vetor[posicaoPivo] = vetor[fim];
+		vetor[fim] = aux;
+		registro->trocas++;		// Contabiliza troca
+	}
 
 	return posicaoPivo;
 }
@@ -368,27 +379,52 @@ int particaoFim(int* vetor, int inicio, int fim, Registro* registro){
 		
 		registro->comparacoes++;		// Contabiliza comparação
 		if(vetor[j] <= pivo){
-			int aux = vetor[posicaoPivo];
-			vetor[posicaoPivo] = vetor[j];
-			vetor[j] = aux;
-			registro->trocas++;		// Contabiliza troca
+			// Só troca (e conta) se os elementos estiverem em posições diferentes
+			if (posicaoPivo != j) {
+				int aux = vetor[posicaoPivo];
+				vetor[posicaoPivo] = vetor[j];
+				vetor[j] = aux;
+				registro->trocas++; 
+			}
 			posicaoPivo++;
 		}
 	}
-	int aux = vetor[posicaoPivo];
-	vetor[posicaoPivo] = vetor[fim];
-	vetor[fim] = aux;
-	registro->trocas++;		// Contabiliza troca
+
+	// Coloca o pivô na posição correta
+	if (posicaoPivo != fim) {
+		int aux = vetor[posicaoPivo];
+		vetor[posicaoPivo] = vetor[fim];
+		vetor[fim] = aux;
+		registro->trocas++;
+	}
 
 	return posicaoPivo;
 }
 
 void quickSortFim(int* vetor, int inicio, int fim, Registro* registro){
+	/*
+	O código abaixo funciona, porém quando quando o vetor é crescente de 500 mil elementos,
+	a recursão dele exige muita memória e acaba dando erro de segmentação
+
 	if(inicio < fim){
 		int posicaoPivo = particaoFim(vetor, inicio, fim, registro);	// Escolhe um pivô e deixa número menores à esquerda e maiores à direita
 		quickSortFim(vetor, inicio, posicaoPivo - 1, registro);	// Ordena o lado esquerdo do pivô
 		quickSortFim(vetor, posicaoPivo + 1, fim, registro);		// Ordena o lado direito do pivô
 	}
+	*/
+
+	while (inicio < fim) {
+		int p = particaoFim(vetor, inicio, fim, registro);
+
+		// Otimização: Escolhe sempre o lado MENOR para a recursão
+		if (p - inicio < fim - p) {
+			quickSortFim(vetor, inicio, p - 1, registro);
+			inicio = p + 1; // Transforma a chamada da direita em um loop (iteração)
+		} else {
+			quickSortFim(vetor, p + 1, fim, registro);
+			fim = p - 1; // Transforma a chamada da esquerda em um loop (iteração)
+		}
+    }
 }
 
 int particaoMediana(int* vetor, int inicio, int fim, Registro* registro){

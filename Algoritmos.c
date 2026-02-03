@@ -495,9 +495,8 @@ void quickSortMediana(int* vetor, int inicio, int fim, Registro* registro){
 		quickSortMediana(vetor, p + 1, fim, registro);	// Ordena os número maiores que o pivô
 	}
 }
-/*
- Tem que alterar sistema de contabilização de trocas. Não está coerente!
-*/
+
+
 void merge(int* vetor, int inicio, int meio, int tamanho, Registro* registro){
 	// Separa o vetor em dois vetores
 	int tam_esquerda = meio - inicio;
